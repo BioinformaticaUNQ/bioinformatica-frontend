@@ -1,0 +1,16 @@
+/node_modules
+.DS_Store
+.env
+dev.js
+manifest.yml
+.DS_Store
+Thumbs.db
+.env
+.idea
+npm-debug.log
+compilation-stats.json
+.mp4
+.log
+/logs
+
+package-lock.json
