@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import cadena from './images/cadena.jpeg';
+import FastaUpload from './components/FastaUpload';
 import './App.css';
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
             <p>TP final</p>
         </div>
 
-
+        <FastaUpload/>
       </header>
     </div>
   );
