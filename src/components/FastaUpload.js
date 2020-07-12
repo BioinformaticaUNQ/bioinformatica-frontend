@@ -1,6 +1,6 @@
 
 import React from 'react';
-import axios, { post } from 'axios';
+import { post } from 'axios';
 
 export default class FastaUpload  extends React.Component {
 	constructor(props) {
@@ -44,6 +44,14 @@ export default class FastaUpload  extends React.Component {
 		this.setState({[target.name]:value});
 	}
 
+
+	handlerTree = () => {
+
+
+	}
+
+
+
 render() {
 		return (
 			<form onSubmit={e => this.onFormSubmit(e)}>
@@ -54,7 +62,19 @@ render() {
 				<input type="text" name="detalles" onChange={detalles => this.onChange(detalles)}/>
 				<input type="file" name="fasta_file" onChange={e => this.onChange(e)} />
 				<button type="submit">Enviar Peticion</button>
+
+				{/* <div>
+					<button onClick={} > Ir al Arbolito</button>
+				</div> */}
+
+				<br/>
+				<br/>
+				<br/>
+
+
 			</form>
+
+
 		);
 	}
 

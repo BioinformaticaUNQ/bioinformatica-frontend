@@ -5,6 +5,7 @@ import FastaUpload from './components/FastaUpload';
 import MapSequences from './components/mapsequences/mapsequences';
 import './App.css';
 import DisplayTree from './components/displaytree/displaytree';
+import ExpansionPanel from './components/ExpansionPanel';
 
 function App() {
   return (
@@ -16,9 +17,13 @@ function App() {
             <h2>BIOINFORMATICA</h2>
             <p>TP final</p>
         </div>
-        <DisplayTree/>
-        <MapSequences/>
-        <FastaUpload/>
+        {/* <FastaUpload/>
+        
+        <DisplayTree/> */}
+
+        <ExpansionPanel/>
+
+        {/* <MapSequences/> */}
       </header>
     </div>
   );

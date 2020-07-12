@@ -50,10 +50,11 @@ export default class MapSequences extends React.Component {
 		const activeSeq = this.state.activeSeq;
 		return (
 			<div className='container'>
-				<Map center={[45.4, -75.7]} zoom={1}>
+				<Map center={[45.4, -75.7]} zoom={2}>
 					<TileLayer
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 					attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+					noWrap
 					/>
 					{
 						seqs.map( seq => (

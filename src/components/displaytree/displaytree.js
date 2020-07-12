@@ -15,7 +15,7 @@ export default class DisplayTree extends React.Component {
 	}
 	componentDidMount() {
 		// const tree =Pht;
-		debugger;
+		//debugger;
 		// const tree2 = 'nada';//d3.layout.phylotree().svg(d3.select("#tree_display"));
 	}
 	render(){
