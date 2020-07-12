@@ -4,6 +4,7 @@ import cadena from './images/cadena.jpeg';
 import FastaUpload from './components/FastaUpload';
 import MapSequences from './components/mapsequences/mapsequences';
 import './App.css';
+import DisplayTree from './components/displaytree/displaytree';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <h2>BIOINFORMATICA</h2>
             <p>TP final</p>
         </div>
+        <DisplayTree/>
         <MapSequences/>
         <FastaUpload/>
       </header>
