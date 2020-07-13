@@ -45,7 +45,7 @@ export default function SimpleExpansionPanel() {
 
       </ExpansionPanel>
 
-      <ExpansionPanel>
+      <ExpansionPanel TransitionProps={{ unmountOnExit: true }} >
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"
@@ -64,7 +64,7 @@ export default function SimpleExpansionPanel() {
 
       </ExpansionPanel>
 
-      <ExpansionPanel >
+      <ExpansionPanel TransitionProps={{ unmountOnExit: true }} >
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel3a-content"

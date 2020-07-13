@@ -33,6 +33,17 @@ export default class MapSequences extends React.Component {
 					"latitude": 45.0,
 					"longitude": 75.0,
 					"fasta": 36
+			},
+			{
+					"id": 26,
+					"gb_id": "GARCA.1",
+					"sequence": "GARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCA",
+					//"latitude": -38.416097,
+					//"longitude": -63.616672,
+					"latitude": -63.616672,
+					"longitude": -38.416097,
+					"fasta": 36
+					// si pongo los valores invertidos funciona, sino termina en el agua...
 			}
     ],
 			activeSeq: null,
@@ -72,8 +83,8 @@ export default class MapSequences extends React.Component {
 					{activeSeq && (
 						<Popup
 						position={[
+							activeSeq.latitude,
 							activeSeq.longitude,
-							activeSeq.latitude
 						]}
 						onClose={() => {
 							this.setActiveSeq(null);
