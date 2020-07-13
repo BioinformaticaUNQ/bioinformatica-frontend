@@ -24,6 +24,38 @@ const useStyles = makeStyles((theme) => ({
 export default function SimpleExpansionPanel() {
   const classes = useStyles();
 
+
+
+  const initialState = {
+    sequences: []
+  };
+
+
+   const [state, setState] = React.useState(initialState);
+
+
+
+  const extractSequencesToUpload = (seqs) => {
+
+    console.log(`***********-extractSequencesToUpload-  seqs:  ${ JSON.stringify(seqs) }`);
+
+    setState({
+        sequences: seqs,
+    });
+  }
+
+
+  const getSequences = async () => {
+
+    const { sequences } = state;
+
+    console.log(`***********-getSequences-  sequences:  ${ JSON.stringify(sequences) }`);
+
+    return sequences;
+  }
+
+
+
   return (
     <div className={classes.root}>
       <ExpansionPanel>
@@ -41,7 +73,7 @@ export default function SimpleExpansionPanel() {
           </Typography>
         </ExpansionPanelDetails>
 
-        <FastaUpload/>
+        <FastaUpload extractSequencesToUpload={extractSequencesToUpload}/>
 
       </ExpansionPanel>
 
@@ -64,6 +96,7 @@ export default function SimpleExpansionPanel() {
 
       </ExpansionPanel>
 
+
       <ExpansionPanel TransitionProps={{ unmountOnExit: true }} >
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
@@ -79,7 +112,7 @@ export default function SimpleExpansionPanel() {
           </Typography>
         </ExpansionPanelDetails>
 
-        <MapSequences/>
+        <MapSequences getSequences={getSequences} />
 
       </ExpansionPanel>
     </div>

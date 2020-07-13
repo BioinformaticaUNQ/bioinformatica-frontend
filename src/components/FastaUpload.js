@@ -3,12 +3,15 @@ import React from 'react';
 import { post } from 'axios';
 
 export default class FastaUpload  extends React.Component {
+
 	constructor(props) {
 		super(props);
+
 		this.state = {
-			nombre:'',
-			detalles:'',
-			fasta_file:null
+			nombre: '',
+			detalles: '',
+			fasta_file: null,
+			sequences: [],
 		};
 	}
 
@@ -24,13 +27,29 @@ export default class FastaUpload  extends React.Component {
         headers: {
 					'content-type': 'multipart/form-data'
         }
-    };
+	};
+	
 		post(url, formData,config)
-		.then( resp => {console.log(resp);
+		.then( resp => {
+
+			const { extractSequencesToUpload } = this.props;
+
+			console.log(`***********--  resp:  ${ JSON.stringify(resp) }`);
+			//console.log(resp);
 			alert('Archivo subido correctamente');
+
+			const { sequences } = resp.data;
+			console.log(`***********--  sequences:  ${ JSON.stringify(sequences) }`);
+
+			this.setState({
+				sequences: sequences
+			});
+
+			extractSequencesToUpload(sequences);
 		})
 		.catch(error => {
-			alert('No se pudo subir el archivo: '+JSON.stringify(error.response.data));
+			//alert('No se pudo subir el archivo: '+JSON.stringify(error.response.data));
+			alert(`No se pudo subir el archivo:  ${ JSON.stringify(error) }`);
 		});
 	}
 
@@ -45,9 +64,16 @@ export default class FastaUpload  extends React.Component {
 	}
 
 
-	handlerTree = () => {
+	// handlerTree = () => {
 
 
+	// }
+
+	getSequences = () => {
+
+		const { sequences } = this.state;
+
+		return sequences;
 	}
 
 

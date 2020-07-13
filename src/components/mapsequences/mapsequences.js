@@ -5,12 +5,9 @@ import "./mapsequences.css";
 
 // import axios, { get } from 'axios';
 
-export default class MapSequences extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			sequences: [
-				{
+
+const secuences_mock = [
+			{
 					"id": 24,
 					"gb_id": "DQ362940.1",
 					"sequence": "ATGTCTTGGAAAGTGGTGATCATTTTTTCATTGTTAATAACACCTCAACACGGTCTTAAAGAGAGCTATTTAGAAGAGTCATGTAGCACTATAACTGAAGGATATCTCAGTGTTCTGAGGACAGGTTGGTATACCAACGTTTTTACACTGGAGGTAGGTGATGTAGAGAACCTTACATGTGCTGATGGACCTAGCTTAATAAAAACAGAATTAGACCTGACCAAAAGTGCACTAAGAGAGCTCAGAACAGTTTCTGCTGATCAACTGGCAAGAGAGGAGCAAATTGAGAATCCCAGACAATCTAGATTTGTTCTAGGAGCAATAGCACTCGGTGTTGCAACAGCAGCTGCAGTTACAGCAGGTGTTGCAATTGCCAAAACCATCCGGCTTGAAAGTGAAGTAACAGCAATTAAGAATGCCCTCAAAAAGACCAATGAAGCAGTATCTACATTGGGGAATGGAGTTCGAGTGTTGGCAACTGCAGTGAGGGAGCTGAAAGATTTTGTGAGCAAGAATCTAACACGTGCAATCAACAAAAACAAGTGCGACATTGCTGACCTGAAAATGGCCGTTAGCTTCAGTCAATTCAACAGAAGGTTTCTAAATGTTGTGCGGCAATTTTCAGACAATGCTGGAATAACACCAGCAATATCCTTGGACTTAATGACAGATGCTGAACTAGCCAGAGCTGTTTCCAACATGCCAACATCTGCAGGACAAATAAAACTGATGTTGGAGAACCGTGCAATGGTAAGAAGAAAGGGGTTCGGAATCCTGATAGGAGTTTACGGAAGCTCCGTAATTTACATGG",
@@ -38,23 +35,61 @@ export default class MapSequences extends React.Component {
 					"id": 26,
 					"gb_id": "GARCA.1",
 					"sequence": "GARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCA",
-					//"latitude": -38.416097,
-					//"longitude": -63.616672,
-					"latitude": -63.616672,
-					"longitude": -38.416097,
+					"latitude": -38.416097,
+					"longitude": -63.616672,
 					"fasta": 36
 					// si pongo los valores invertidos funciona, sino termina en el agua...
 			}
-    ],
+		];
+
+export default class MapSequences extends React.Component {
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			sequences: [],
 			activeSeq: null,
 		};
 	}
 
-	setActiveSeq = (seq) => {
-		this.setState(
-			{activeSeq:seq}
-		)
+
+	componentWillMount(){
+		
+		console.log("cacatua");
+
+		this.handlerSequences();
 	}
+
+
+	handlerSequences = async () => {
+
+		const { getSequences } = this.props;
+
+		var seqs = await getSequences();
+
+		await this.setSequences(seqs);
+	}
+
+
+	setSequences = async (seqs) => {
+
+		console.log(`***********-setSequences-  seqs:  ${ JSON.stringify(seqs) }`);
+
+		this.setState({
+			sequences: seqs
+		});
+	}
+
+
+
+	setActiveSeq = (seq) => {
+		this.setState({
+			activeSeq: seq
+		})
+	}
+
+
 
 	render() {
 		const seqs = this.state.sequences;
@@ -72,8 +107,8 @@ export default class MapSequences extends React.Component {
 							<Marker
 								key={seq.id}
 								position={[
-									seq.longitude,
 									seq.latitude,
+									seq.longitude,
 								]}
 								attribution={seq.id}
 								onclick ={ () => {this.setActiveSeq(seq);}}
