@@ -82,16 +82,26 @@ render() {
 		return (
 			<form onSubmit={e => this.onFormSubmit(e)}>
 				<h1>Fasta</h1>
-				<label>Nombre</label>
-				<input type="text" name="nombre" onChange={nombre => this.onChange(nombre)}/>
-				<label>Detalles</label>
-				<input type="text" name="detalles" onChange={detalles => this.onChange(detalles)}/>
-				<input type="file" name="fasta_file" onChange={e => this.onChange(e)} />
-				<button type="submit">Enviar Peticion</button>
 
-				{/* <div>
-					<button onClick={} > Ir al Arbolito</button>
-				</div> */}
+				<div style={{display: "inline-flex", justifyContent: "space-between", width: "70%", fontSize: "medium"}}>
+
+					<td>
+						<label>Nombre</label>
+						<input type="text" name="nombre" onChange={nombre => this.onChange(nombre)}/>
+					</td>
+
+					<td>
+						<label>Detalles</label>
+						<input type="text" name="detalles" onChange={detalles => this.onChange(detalles)}/>
+					</td>
+
+					<td>
+						<input type="file" name="fasta_file" onChange={e => this.onChange(e)} />
+						<button type="submit">Enviar Peticion</button>
+					</td>
+
+				</div>
+
 
 				<br/>
 				<br/>
