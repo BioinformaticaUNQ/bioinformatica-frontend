@@ -32,7 +32,7 @@ function sort_nodes (tree, direction) {
     }
     n["count_depth"] = d;
   });
-  const asc = direction == "ascending";
+  const asc = direction === "ascending";
   tree.resort_children (function (a,b) {
     return (a["count_depth"] - b["count_depth"]) * (asc ? 1 : -1);
   });
@@ -100,7 +100,7 @@ function placenodes(tree, perform_internal_layout, accessor, sort) {
 function getColorScale(tree, highlightBranches) {
   if(!highlightBranches) return null;
   if(typeof highlightBranches === "boolean") {
-    return tree.parsed_tags && highlightBranches ? 
+    return tree.parsed_tags && highlightBranches ?
       scaleOrdinal().domain(tree.parsed_tags).range(schemeCategory10) :
       null;
   }
@@ -158,7 +158,7 @@ function Phylotree(props) {
   return (<g transform={props.transform}>
     {props.includeBLAxis ? <g>
       <text
-        x={x_scale(tree.max_x/2)}
+        x={x_scale(tree.max_x/3)}
         y={10}
         alignmentBaseline='middle'
         textAnchor='middle'
