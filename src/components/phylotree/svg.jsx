@@ -13,7 +13,8 @@ function SVG(props) {
     style={{
       borderStyle: props.borderStyle,
       borderWidth: props.borderWidth,
-      borderColor: props.borderColor
+      borderColor: props.borderColor,
+      fontSize: "15px"
     }}>
       {React.cloneElement(props.children, new_props)}
     </svg>);
@@ -25,7 +26,7 @@ SVG.defaultProps = {
   padding: 10,
   borderStyle: "solid",
   borderWidth: 1,
-  borderColor: "lightgrey"
+  borderColor: "lightgrey",
 }
 
 export default SVG;

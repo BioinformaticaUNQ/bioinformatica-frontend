@@ -56,7 +56,7 @@ export default class MapSequences extends React.Component {
 
 	componentWillMount(){
 		
-		console.log("cacatua");
+		console.log("cacatua_map");
 
 		this.handlerSequences();
 	}
@@ -92,18 +92,23 @@ export default class MapSequences extends React.Component {
 
 
 	render() {
-		const seqs = this.state.sequences;
-		const activeSeq = this.state.activeSeq;
+		
+		const { sequences, activeSeq } = this.state;
+
+		console.log(`***********-render map-  sequences:  ${ JSON.stringify(sequences) }`);
+
+
 		return (
 			<div className='container'>
 				<Map center={[45.4, -75.7]} zoom={2}>
 					<TileLayer
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 					attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-					noWrap
+					//noWrap
 					/>
 					{
-						seqs.map( seq => (
+						sequences.map( seq => (
+							
 							<Marker
 								key={seq.id}
 								position={[

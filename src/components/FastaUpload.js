@@ -12,6 +12,7 @@ export default class FastaUpload  extends React.Component {
 			detalles: '',
 			fasta_file: null,
 			sequences: [],
+			newick_tree: null
 		};
 	}
 
@@ -19,33 +20,38 @@ export default class FastaUpload  extends React.Component {
 		e.preventDefault();
 		//Esto hay que centralizarlo en un servicio de env o algo asi
 		const url = 'http://localhost:8000/api/fastas/';
-    const formData = new FormData();
+    	const formData = new FormData();
 		formData.append('fasta_file',this.state.fasta_file);
 		formData.append('nombre', this.state.nombre);
 		formData.append('detalles', this.state.detalles);
-    const config = {
+    	const config = {
         headers: {
 					'content-type': 'multipart/form-data'
         }
 	};
 	
-		post(url, formData,config)
+
+	post(url, formData,config)
 		.then( resp => {
 
-			const { extractSequencesToUpload } = this.props;
+			const { extractDataToUpload } = this.props;
+
+			//effectOFF();
 
 			console.log(`***********--  resp:  ${ JSON.stringify(resp) }`);
 			//console.log(resp);
 			alert('Archivo subido correctamente');
 
-			const { sequences } = resp.data;
+			const { sequences, newick_tree } = resp.data;
 			console.log(`***********--  sequences:  ${ JSON.stringify(sequences) }`);
+			console.log(`***********--  newick_tree:  ${ JSON.stringify(newick_tree) }`);
 
 			this.setState({
-				sequences: sequences
+				sequences: sequences,
+				newick_tree: newick_tree
 			});
 
-			extractSequencesToUpload(sequences);
+			extractDataToUpload(sequences, newick_tree);
 		})
 		.catch(error => {
 			//alert('No se pudo subir el archivo: '+JSON.stringify(error.response.data));
@@ -53,28 +59,34 @@ export default class FastaUpload  extends React.Component {
 		});
 	}
 
+
 	valueForType(target) {
 		return target.type === 'text' ? target.value : target.files[0];
 	}
 
+
 	onChange(e) {
+
 		const target = e.target;
-    const value = this.valueForType(target);
+    	const value = this.valueForType(target);
 		this.setState({[target.name]:value});
 	}
+	
+	
+	// handlerButton = () => {
+		
+	// 	const { effectON } = this.props;
 
-
-	// handlerTree = () => {
-
-
+	// 	effectON();
 	// }
 
-	getSequences = () => {
 
-		const { sequences } = this.state;
+	// getSequences = () => {
 
-		return sequences;
-	}
+	// 	const { sequences } = this.state;
+
+	// 	return sequences;
+	// }
 
 
 
@@ -97,7 +109,7 @@ render() {
 
 					<td>
 						<input type="file" name="fasta_file" onChange={e => this.onChange(e)} />
-						<button type="submit">Enviar Peticion</button>
+						<button type="submit"  >Enviar Peticion</button>
 					</td>
 
 				</div>

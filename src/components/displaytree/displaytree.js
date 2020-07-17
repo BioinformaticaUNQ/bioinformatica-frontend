@@ -29,7 +29,7 @@ function TooltipContents(props) {
       x={100}
       y={50}
       fill="white"
-      textAnchor="middle"
+	  textAnchor="middle"
     >
       {props.data.name}
     </text>
@@ -37,26 +37,62 @@ function TooltipContents(props) {
 }
 
 class DisplayTree extends React.Component {
+
   constructor(props) {
-    super(props);
+
+	super(props);
+	
     this.state = {
       tree: null,
       width: 1200,
-      height: 600,
+      height: 550,
       alignTips: "right",
       sort: null,
       internal: true,
-      newick: props.newick,
+      newick: null,
     };
   }
 
+
+	componentWillMount(){
+			
+		console.log("cacatua_tree");
+
+		this.handlerNewick();
+	}
+
+
+
+	handlerNewick = async () => {
+
+		const { getNewick } = this.props;
+
+		var newick = await getNewick();
+
+		await this.setNewick(newick);
+	}
+
+
+	setNewick = async (newick) => {
+
+		console.log(`***********-setNewick-  newick:  ${ JSON.stringify(newick) }`);
+
+		this.setState({
+			newick: newick
+		});
+	}
+
+
   render() {
-    const { width, height } = this.state;
-    const newick = this.state.newick;
+    const { width, height, newick } = this.state;
+	
+	console.log(`***********-displayTree render-  newick:  ${ JSON.stringify(newick) }`);
+
     return (
       <div>
-        <SVG width={width} height={height}>
+        <SVG width={width} height={height} >
           <Phylotree
+		  	maxLabelWidth={100}
             width={width-5*2}
             height={height-5*2}
             newick={newick}
@@ -64,7 +100,7 @@ class DisplayTree extends React.Component {
             highlightBranches={true}
             alignTips='left'
             tooltip={TooltipContents}
-            branchStyler={()=>({strokeWidth:7})}
+			branchStyler={ () => ( {strokeWidth: 6, stroke: "green" } ) }
           />
         </SVG>
       </div>
