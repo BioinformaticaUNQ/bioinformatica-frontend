@@ -2,6 +2,7 @@
 import React from 'react';
 import { post } from 'axios';
 import AlertDialog from './AlertDialog';
+import ErrorDialog from './ErrorDialog';
 import BackLock from './BackLock';
 
 export default class FastaUpload  extends React.Component {
@@ -17,6 +18,8 @@ export default class FastaUpload  extends React.Component {
 			newick_tree: null,
 			invalidFasta: false,
 			loading: false,
+			errorFasta:false,
+			errorString:''
 		};
 	}
 
@@ -71,10 +74,22 @@ export default class FastaUpload  extends React.Component {
 					this.effectOFF();
 				})
 				.catch(error => {
+					if(error.message == "Network Error"){
+						this.effectOFF();
+						this.setState({
+							errorFasta: true,
+							errorString: "Atentx no tenes levantado el backend"
+						});
+					}
+					else{
 					this.effectOFF();
-					//alert('No se pudo subir el archivo: '+JSON.stringify(error.response.data));
-					alert(`No se pudo subir el archivo:  ${ JSON.stringify(error) }`);
+					this.setState({
+						errorFasta: true,
+						errorString: JSON.stringify(error.response.data.non_field_errors[0])
+					});
+					//alert(`No se pudo subir el archivo:  ${ JSON.stringify(error) }`);
 					//alert(`No se pudo subir el archivo:  ${ JSON.stringify(error.response.data.non_field_errors[0]) }`)
+					}
 				});
 
 		}else{
@@ -110,7 +125,8 @@ export default class FastaUpload  extends React.Component {
     handleCloseModal = () => {
 
         this.setState({
-            invalidFasta: false
+			invalidFasta: false,
+			errorFasta:false
         })
     }
 
@@ -146,7 +162,7 @@ export default class FastaUpload  extends React.Component {
 
 render() {
 
-	const { fasta_file, invalidFasta, loading } = this.state;
+	const { fasta_file, invalidFasta, loading,errorFasta,errorString } = this.state;
 
 		return (
 			<form onSubmit={e => this.onFormSubmit(e)}>
@@ -173,8 +189,8 @@ render() {
 				<br/>
 				<br/>
 
-				<AlertDialog invalidFasta={invalidFasta} handleCloseModal={this.handleCloseModal} />
-
+				<AlertDialog invalidFasta={invalidFasta} handleCloseModal={this.handleCloseModal} textError="No es un archivo formato de fasta" />
+				<ErrorDialog errorInFile={errorFasta} handleCloseModal={this.handleCloseModal} textError={errorString} />
 
 				<BackLock loading={loading} />
 

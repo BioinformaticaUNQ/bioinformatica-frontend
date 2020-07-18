@@ -9,7 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 export default function AlertDialog(props) {
 
-  const { invalidFasta, handleCloseModal } = props;
+  const { invalidFasta, handleCloseModal, textError } = props;
   
 //  const [open, setOpen] = React.useState(jump);
 
@@ -38,7 +38,7 @@ export default function AlertDialog(props) {
         <DialogTitle id="alert-dialog-title">{"ERROR"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            blablablabla culo culo culo
+            {textError}
             
           </DialogContentText>
         </DialogContent>
