@@ -95,30 +95,37 @@ export default function SimpleExpansionPanel() {
   }
 
 
-  const effectON = () => {
+//   const effectON = () => {
 
-    setState({
-        loading: true
-    })
-  }
+//     setState({
+//         loading: true
+//     })
+//   }
 
   
-  const effectOFF = () => {
+//   const effectOFF = () => {
 
-    setState({
-        loading: false
-    })
-  }
+//     setState({
+//         loading: false
+//     })
+//   }
 
 
-  const getLoading = async () => {
+//   const getLoading = async () => {
 
-    const { loading } = state;
+//     const { loading } = state;
 
-    console.log(`***********-getLoading-  loading:  ${ JSON.stringify(loading) }`);
+//     console.log(`***********-getLoading-  loading:  ${ JSON.stringify(loading) }`);
+
+//     return loading;
+//   }
+
+
+  const extractLoading = (loading) => {
 
     return loading;
   }
+
 
 
   const {newick, newick2, newick3, loading} = state;
@@ -140,8 +147,8 @@ export default function SimpleExpansionPanel() {
           </Typography>
         </ExpansionPanelDetails>
 
-        <FastaUpload extractDataToUpload={extractDataToUpload}  />
-        {/* <FastaUpload extractSequencesToUpload={extractSequencesToUpload} extractNewickToUpload={extractNewickToUpload}  effectON={effectON} effectOFF={effectOFF}/> */}
+        <FastaUpload extractDataToUpload={extractDataToUpload} />
+        {/* <FastaUpload extractDataToUpload={extractDataToUpload}  effectON={effectON} effectOFF={effectOFF}/> */}
 
       </ExpansionPanel>
 
@@ -184,7 +191,7 @@ export default function SimpleExpansionPanel() {
 
 
 
-      {/* <BackLock loading={loading} getLoading={getLoading} /> */}
+      {/* <BackLock extractLoading={extractLoading} /> */}
 
     </div>
 

@@ -95,8 +95,13 @@ export default class MapSequences extends React.Component {
 		
 		const { sequences, activeSeq } = this.state;
 
-		console.log(`***********-render map-  sequences:  ${ JSON.stringify(sequences) }`);
-
+		console.log(`***********-render map-  sequences.length :  ${ JSON.stringify(sequences.length) }`);
+		
+		const filteredSequences = sequences.filter( seq => seq.latitude && seq.longitude );
+		
+		console.log(`***********-render map-  filteredSequences.length :  ${ JSON.stringify(filteredSequences.length) }`);
+		
+		console.log(`***********-render map-  filteredSequences :  ${ JSON.stringify(filteredSequences) }`);
 
 		return (
 			<div className='container'>
@@ -107,7 +112,7 @@ export default class MapSequences extends React.Component {
 					//noWrap
 					/>
 					{
-						sequences.map( seq => (
+						filteredSequences.map( seq => (
 							
 							<Marker
 								key={seq.id}
@@ -116,7 +121,7 @@ export default class MapSequences extends React.Component {
 									seq.longitude,
 								]}
 								attribution={seq.id}
-								onclick ={ () => {this.setActiveSeq(seq);}}
+								onclick ={ () => {this.setActiveSeq(seq)}}
 							/>
 						))
 					}

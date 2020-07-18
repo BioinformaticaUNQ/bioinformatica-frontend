@@ -14,20 +14,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SimpleBackdrop(props) {
     
-const { loading, getLoading } = props;
+const { loading } = props;
 
 console.log(`***********-SimpleBackdrop-  loading:  ${ JSON.stringify(loading) }`);
-console.log(`***********-SimpleBackdrop-  getLoading:  ${ JSON.stringify(getLoading()) }`);
+//console.log(`***********-SimpleBackdrop-  extractLoading:  ${ JSON.stringify(extractLoading) }`);
 
   const classes = useStyles();
-  const [open, setOpen] = React.useState(loading);
+  //const [open, setOpen] = React.useState(loading);
 
   const handleClose = () => {
-    setOpen(false);
+    //setOpen(false);
   };
 
   const handleToggle = () => {
-    setOpen(!open);
+    //setOpen(!open);
   };
 
 
@@ -39,7 +39,7 @@ console.log(`***********-SimpleBackdrop-  getLoading:  ${ JSON.stringify(getLoad
       </Button> */}
 
       {/* <Backdrop className={classes.backdrop} open={open} onClick={handleClose}> */}
-      <Backdrop className={classes.backdrop} open={open} >
+      <Backdrop className={classes.backdrop} open={loading} >
 
         <EffectLoad />
 

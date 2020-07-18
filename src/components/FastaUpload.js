@@ -1,6 +1,8 @@
 
 import React from 'react';
 import { post } from 'axios';
+import AlertDialog from './AlertDialog';
+import BackLock from './BackLock';
 
 export default class FastaUpload  extends React.Component {
 
@@ -12,55 +14,83 @@ export default class FastaUpload  extends React.Component {
 			detalles: '',
 			fasta_file: null,
 			sequences: [],
-			newick_tree: null
+			newick_tree: null,
+			invalidFasta: false,
+			loading: false,
 		};
 	}
 
 	onFormSubmit(e) {
+
 		e.preventDefault();
 		//Esto hay que centralizarlo en un servicio de env o algo asi
 		const url = 'http://localhost:8000/api/fastas/';
-    	const formData = new FormData();
-		formData.append('fasta_file',this.state.fasta_file);
-		formData.append('nombre', this.state.nombre);
-		formData.append('detalles', this.state.detalles);
-    	const config = {
-        headers: {
-					'content-type': 'multipart/form-data'
-        }
-	};
+		const formData = new FormData();
+		
+		const { fasta_file, nombre, detalles } = this.state;
+
+		if( fasta_file && fasta_file.name && fasta_file.name.includes(".fasta") ){
+
+			this.effectON();
+
+			//this.sendLoading();
+
+			console.log(`***********-onFormSubmit-  fasta_file:  ${ fasta_file} `);
+			console.log(`***********-onFormSubmit-  fasta_file.name:  ${ fasta_file.name} `);
+
+			formData.append('fasta_file', fasta_file);
+			formData.append('nombre', nombre);
+			formData.append('detalles', detalles);
 	
+			const config = {
+				headers: {
+							'content-type': 'multipart/form-data'
+						}
+			};
+		
+			post(url, formData, config)
+				.then( resp => {
+	
+					const { extractDataToUpload } = this.props;
+		
+					console.log(`***********--  resp:  ${ JSON.stringify(resp) }`);
+					//console.log(resp);
+					//alert('Archivo subido correctamente');
+	
+					const { sequences, newick_tree } = resp.data;
+					console.log(`***********--  sequences:  ${ JSON.stringify(sequences) }`);
+					console.log(`***********--  newick_tree:  ${ JSON.stringify(newick_tree) }`);
+	
+					this.setState({
+						sequences: sequences,
+						newick_tree: newick_tree
+					});
+	
+					extractDataToUpload(sequences, newick_tree);
 
-	post(url, formData,config)
-		.then( resp => {
+					this.effectOFF();
+				})
+				.catch(error => {
+					this.effectOFF();
+					//alert('No se pudo subir el archivo: '+JSON.stringify(error.response.data));
+					alert(`No se pudo subir el archivo:  ${ JSON.stringify(error) }`);
+					//alert(`No se pudo subir el archivo:  ${ JSON.stringify(error.response.data.non_field_errors[0]) }`)
+				});
 
-			const { extractDataToUpload } = this.props;
+		}else{
 
-			//effectOFF();
-
-			console.log(`***********--  resp:  ${ JSON.stringify(resp) }`);
-			//console.log(resp);
-			alert('Archivo subido correctamente');
-
-			const { sequences, newick_tree } = resp.data;
-			console.log(`***********--  sequences:  ${ JSON.stringify(sequences) }`);
-			console.log(`***********--  newick_tree:  ${ JSON.stringify(newick_tree) }`);
-
+			//alert("No te pases de vivo!!");
 			this.setState({
-				sequences: sequences,
-				newick_tree: newick_tree
+				invalidFasta: true
 			});
 
-			extractDataToUpload(sequences, newick_tree);
-		})
-		.catch(error => {
-			//alert('No se pudo subir el archivo: '+JSON.stringify(error.response.data));
-			alert(`No se pudo subir el archivo:  ${ JSON.stringify(error) }`);
-		});
+		}
+
 	}
 
 
 	valueForType(target) {
+
 		return target.type === 'text' ? target.value : target.files[0];
 	}
 
@@ -68,29 +98,56 @@ export default class FastaUpload  extends React.Component {
 	onChange(e) {
 
 		const target = e.target;
-    	const value = this.valueForType(target);
+		const value = this.valueForType(target);
+		console.log(`***********-onChange-  value:  ${ JSON.stringify(value) }`);
+		//console.log(`***********-onChange-  target:  ${ JSON.stringify(target) }`);
+		
 		this.setState({[target.name]:value});
 	}
 	
+
+
+    handleCloseModal = () => {
+
+        this.setState({
+            invalidFasta: false
+        })
+    }
+
+
+
+	effectON = () => {
+
+		this.setState({
+			loading: true
+		})
+	}
 	
-	// handlerButton = () => {
-		
-	// 	const { effectON } = this.props;
+	  
+	effectOFF = () => {
+	
+		this.setState({
+			loading: false
+		})
+	}
 
-	// 	effectON();
+
+	// sendLoading = () => {
+
+	// 	const { loading } = this.state;
+
+	// 	const { extractLoading } = this.props;
+
+	// 	extractLoading(loading);
 	// }
 
-
-	// getSequences = () => {
-
-	// 	const { sequences } = this.state;
-
-	// 	return sequences;
-	// }
 
 
 
 render() {
+
+	const { fasta_file, invalidFasta, loading } = this.state;
+
 		return (
 			<form onSubmit={e => this.onFormSubmit(e)}>
 				<h1>Fasta</h1>
@@ -102,14 +159,11 @@ render() {
 						<input type="text" name="nombre" onChange={nombre => this.onChange(nombre)}/>
 					</td>
 
-					<td>
-						<label>Detalles</label>
-						<input type="text" name="detalles" onChange={detalles => this.onChange(detalles)}/>
-					</td>
 
 					<td>
-						<input type="file" name="fasta_file" onChange={e => this.onChange(e)} />
-						<button type="submit"  >Enviar Peticion</button>
+					{/* accept=".fasta" */}
+						<input type="file" name="fasta_file" onChange={e => this.onChange(e)}  />
+						<button type="submit" disabled={!fasta_file} >Enviar Peticion</button>
 					</td>
 
 				</div>
@@ -119,6 +173,10 @@ render() {
 				<br/>
 				<br/>
 
+				<AlertDialog invalidFasta={invalidFasta} handleCloseModal={this.handleCloseModal} />
+
+
+				<BackLock loading={loading} />
 
 			</form>
 
