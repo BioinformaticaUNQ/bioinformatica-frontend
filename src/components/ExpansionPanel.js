@@ -128,7 +128,7 @@ export default function SimpleExpansionPanel() {
 
 
 
-  const {newick, newick2, newick3, loading} = state;
+  const {newick, newick2, newick3, loading, sequences, newick_tree } = state;
 
 
   return (
@@ -152,7 +152,7 @@ export default function SimpleExpansionPanel() {
 
       </ExpansionPanel>
 
-      <ExpansionPanel TransitionProps={{ unmountOnExit: true }} >
+      <ExpansionPanel TransitionProps={{ unmountOnExit: true }} disabled={!newick_tree} >
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"
@@ -171,7 +171,7 @@ export default function SimpleExpansionPanel() {
       </ExpansionPanel>
 
 
-      <ExpansionPanel TransitionProps={{ unmountOnExit: true }} >
+      <ExpansionPanel TransitionProps={{ unmountOnExit: true }} disabled={!sequences || sequences.length === 0} >
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel3a-content"
@@ -193,16 +193,11 @@ export default function SimpleExpansionPanel() {
 
       {/* <BackLock extractLoading={extractLoading} /> */}
 
+    <br/>
+    <br/>
+
+
     </div>
-
-
-// {
-//     loading ? 
-//         <Effect></Effect>
-//         : <p></p>
-// }
-
     
-
   );
 }
