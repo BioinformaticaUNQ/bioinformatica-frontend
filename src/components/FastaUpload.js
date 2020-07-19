@@ -122,13 +122,13 @@ export default class FastaUpload  extends React.Component {
 	
 
 
-    handleCloseModal = () => {
+	handleCloseModal = () => {
 
-        this.setState({
-			invalidFasta: false,
-			errorFasta:false
-        })
-    }
+			this.setState({
+		invalidFasta: false,
+		errorFasta:false
+			})
+	}
 
 
 

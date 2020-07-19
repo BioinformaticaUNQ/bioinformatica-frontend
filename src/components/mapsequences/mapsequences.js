@@ -1,8 +1,9 @@
 import React from 'react';
-import { Map, TileLayer, Marker, Popup } from "react-leaflet";
+import { Map, TileLayer, Marker, Popup, Circle } from "react-leaflet";
 import { Icon } from "leaflet";
 import "./mapsequences.css";
-
+import { sequences_colors } from "../../utils/utils";
+import { Newick } from 'newick';
 // import axios, { get } from 'axios';
 
 
@@ -32,7 +33,7 @@ const secuences_mock = [
 					"fasta": 36
 			},
 			{
-					"id": 26,
+					"id": 27,
 					"gb_id": "GARCA.1",
 					"sequence": "GARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCAGARCA",
 					"latitude": -38.416097,
@@ -50,6 +51,7 @@ export default class MapSequences extends React.Component {
 		this.state = {
 			sequences: [],
 			activeSeq: null,
+			colors: props.colors
 		};
 	}
 
@@ -87,13 +89,21 @@ export default class MapSequences extends React.Component {
 		this.setState({
 			activeSeq: seq
 		})
-	}
+	};
 
-
+	get_color_for_sequence = (sec_id, color_dict)=> {
+		let color = 'black';
+		for (var entry in color_dict) {
+			if (entry.includes(sec_id)) {
+				color = color_dict[entry];
+			}
+		}
+		return color;
+	};
 
 	render() {
 		
-		const { sequences, activeSeq } = this.state;
+		const { sequences, activeSeq, colors } = this.state;
 
 		console.log(`***********-render map-  sequences.length :  ${ JSON.stringify(sequences.length) }`);
 		
@@ -120,9 +130,19 @@ export default class MapSequences extends React.Component {
 									seq.latitude,
 									seq.longitude,
 								]}
+								opacity={0}  // Ver si queremos que se muestre el marcador default o solo el puto de color
 								attribution={seq.id}
-								onclick ={ () => {this.setActiveSeq(seq)}}
-							/>
+								onclick ={ () => {this.setActiveSeq(seq);}}
+								>
+								<Circle 
+										center={{lat:seq.latitude, lng: seq.longitude}}
+										fillColor='hsl(0, 100%, 50%)'
+										color={this.get_color_for_sequence(seq.gb_id, colors)}
+										weight='20'
+										radius={100}
+										onclick ={ () => {this.setActiveSeq(seq);}}/>
+
+							</Marker>
 						))
 					}
 					{activeSeq && (
