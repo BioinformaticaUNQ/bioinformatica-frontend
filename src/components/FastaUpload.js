@@ -74,12 +74,21 @@ export default class FastaUpload  extends React.Component {
 					this.effectOFF();
 				})
 				.catch(error => {
+					console.log(error.message)
 					if(error.message == "Network Error"){
 						this.effectOFF();
 						this.setState({
 							errorFasta: true,
-							errorString: "Atentx no tenes levantado el backend"
+							errorString: "El servicio de procesamiento no esta funcionando, por favor revisar"
 						});
+					}
+					else if(error.message == "Request failed with status code 400"){
+						this.effectOFF();
+						this.setState({
+						errorFasta: true,
+						errorString: "El nombre del archivo ya ha sido utilizado anteriormente,por favor utilice otro"
+					});
+
 					}
 					else{
 					this.effectOFF();
