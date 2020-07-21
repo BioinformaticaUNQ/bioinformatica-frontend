@@ -26,7 +26,7 @@ SVG.defaultProps = {
   padding: 10,
   borderStyle: "solid",
   borderWidth: 1,
-  borderColor: "lightgrey",
+  borderColor: "lightgrey"
 }
 
 export default SVG;

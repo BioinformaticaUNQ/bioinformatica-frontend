@@ -108,7 +108,7 @@ export default class FastaUpload  extends React.Component {
 							errorString: "El servicio de procesamiento no esta funcionando, por favor revisar"
 						});
 					}
-					else if(error.message == "Request failed with status code 400"){
+					else if(error.message == "Request failed with status code 400" && (typeof error.response.data.nombre) == 'object'){
 						this.effectOFF();
 						this.setState({
 						errorFasta: true,
