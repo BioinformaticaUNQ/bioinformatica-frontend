@@ -108,7 +108,7 @@ class DisplayTree extends React.Component {
             internalNodeLabels={true}
             labelStyler={this.seq_colors}
             alignTips='left'
-            tooltip={TooltipContents}
+            // tooltip={TooltipContents}
 			      branchStyler={ () => ( { strokeWidth: 4} ) }
 			      //labelStyler={ () => ({ width: "200" }) } 
           />
