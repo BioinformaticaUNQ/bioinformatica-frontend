@@ -211,10 +211,10 @@ render() {
 						<label>Nombre</label>
 						<input type="text" name="nombre" onChange={nombre => this.onChange(nombre)} value={nombre} />
 					</td>
-
-
 					<td>
 						<input type="file" name="fasta_file" onChange={e => this.onChange(e)} id="fasta" key={nombre}/>
+					</td>
+					<td>
 						<button type="submit" disabled={!fasta_file} >Enviar Peticion</button>
 					</td>
 
