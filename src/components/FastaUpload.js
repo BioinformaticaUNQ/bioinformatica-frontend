@@ -10,6 +10,9 @@ export default class FastaUpload  extends React.Component {
 	constructor(props) {
 		super(props);
 
+		//const { cleanFile } = this.props;
+		//console.log(`***********-constructor-  cleanFile:  ${ cleanFile }`);
+
 		this.state = {
 			nombre: '',
 			detalles: '',
@@ -19,9 +22,32 @@ export default class FastaUpload  extends React.Component {
 			invalidFasta: false,
 			loading: false,
 			errorFasta:false,
-			errorString:''
+			errorString:'',
+			//shouldClean: cleanFile
 		};
 	}
+
+
+	componentDidUpdate(prevProps){
+		
+		// const { cleanFile } = this.props;
+		// console.log(`***********-componentDidUpdate-  cleanFile:  ${ cleanFile }`);
+		// console.log(`***********-componentDidUpdate-  prevProps.cleanFile:  ${ prevProps.cleanFile }`);
+		
+
+		if(this.props.cleanFile && this.props.cleanFile !== prevProps.cleanFile){
+
+			console.log(`***********-componentDidUpdate-  IF:  ${ this.props.cleanFile }`);
+
+			//this.cleanFileData();
+			this.setState({
+				nombre: '',
+				detalles: '',
+				fasta_file: null,
+			})
+		}
+	}
+
 
 	onFormSubmit(e) {
 
@@ -133,10 +159,10 @@ export default class FastaUpload  extends React.Component {
 
 	handleCloseModal = () => {
 
-			this.setState({
-		invalidFasta: false,
-		errorFasta:false
-			})
+		this.setState({
+			invalidFasta: false,
+			errorFasta:false
+		})
 	}
 
 
@@ -157,21 +183,23 @@ export default class FastaUpload  extends React.Component {
 	}
 
 
-	// sendLoading = () => {
+	cleanFileData = () => {
 
-	// 	const { loading } = this.state;
+		this.setState({
+			nombre: '',
+			detalles: '',
+			fasta_file: null,
+		})
 
-	// 	const { extractLoading } = this.props;
-
-	// 	extractLoading(loading);
-	// }
-
+		this.props.setCleanFile();
+	}
 
 
 
 render() {
 
-	const { fasta_file, invalidFasta, loading,errorFasta,errorString } = this.state;
+	const { fasta_file, invalidFasta, loading, errorFasta, errorString, nombre, } = this.state;
+
 
 		return (
 			<form onSubmit={e => this.onFormSubmit(e)}>
@@ -181,13 +209,12 @@ render() {
 
 					<td>
 						<label>Nombre</label>
-						<input type="text" name="nombre" onChange={nombre => this.onChange(nombre)}/>
+						<input type="text" name="nombre" onChange={nombre => this.onChange(nombre)} value={nombre} />
 					</td>
 
 
 					<td>
-					{/* accept=".fasta" */}
-						<input type="file" name="fasta_file" onChange={e => this.onChange(e)}  />
+						<input type="file" name="fasta_file" onChange={e => this.onChange(e)} id="fasta" key={nombre}/>
 						<button type="submit" disabled={!fasta_file} >Enviar Peticion</button>
 					</td>
 

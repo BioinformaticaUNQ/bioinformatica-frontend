@@ -8,18 +8,27 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import FastaUpload from './FastaUpload';
 import MapSequences from './mapsequences/mapsequences';
 import DisplayTree from './displaytree/displaytree';
-//import EffectLoad from './EffectLoad';
-import BackLock from './BackLock';
+import CleanButton from './CleanButton';
+//import BackLock from './BackLock';
 import { sequences_colors } from '../utils/utils';
 import { Newick } from 'newick';
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '94%',
   },
   heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular,
+    fontSize: theme.typography.pxToRem(20),
+    fontWeight: theme.typography.fontWeightBold,
+    opacity: "3.38",
+  },
+  heading2: {
+    fontSize: theme.typography.pxToRem(20),
+    fontWeight: theme.typography.fontWeightBold,
+    opacity: "3.38",
+    color: "blanchedalmond"
   },
 }));
 
@@ -41,6 +50,9 @@ export default function SimpleExpansionPanel() {
   const initialState = {
     sequences: [],
     newick_tree: null,
+    expand_tree: false,
+    expand_map: false,
+    cleanFile: false,
     //loading: false,
   };
 
@@ -71,6 +83,7 @@ export default function SimpleExpansionPanel() {
 
 
 
+
   const getSequences = async () => {
 
     const { sequences } = state;
@@ -90,29 +103,51 @@ export default function SimpleExpansionPanel() {
   };
 
 
-//   const effectON = () => {
+  const cleanData = () => {
 
-//     setState({
-//         loading: true
-//     })
-//   }
+    setState({
+        ...state,
+        sequences: [],
+        newick_tree: null,
+        expand_tree: false,
+        expand_map: false,
+        cleanFile: true
+    })
+
+  }
   
-//   const effectOFF = () => {
 
-//     setState({
-//         loading: false
-//     })
-//   }
+ 
+  const setCleanFile = () => {
+    setState({
+        cleanFile: false
+    })
+  }
 
 
-//   const getLoading = async () => {
 
-//     const { loading } = state;
+    const handleClickTree = () => {
 
-//     console.log(`***********-getLoading-  loading:  ${ JSON.stringify(loading) }`);
+        const { expand_tree } = state;
 
-//     return loading;
-//   }
+        console.log(`***********-handleClickTree-  expand_tree:  ${ JSON.stringify(expand_tree) }`);
+
+        setState({
+            ...state,
+            expand_tree: !expand_tree
+        });
+    }
+
+
+    const handleClickMap = () => {
+
+        const { expand_map } = state;
+
+        setState({
+            ...state,
+            expand_map: !expand_map
+        });
+    }
 
 
   const extractLoading = (loading) => {
@@ -121,11 +156,11 @@ export default function SimpleExpansionPanel() {
 
   };
 
-  const {newick, loading, sequences, newick_tree, colors} = state;
+  const {newick, loading, sequences, newick_tree, colors, expand_tree, expand_map, cleanFile} = state;
 
   return (
     <div className={classes.root}>
-      <ExpansionPanel>
+      <ExpansionPanel name="fasta">
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -139,18 +174,19 @@ export default function SimpleExpansionPanel() {
           </Typography>
         </ExpansionPanelDetails>
 
-        <FastaUpload extractDataToUpload={extractDataToUpload} />
+        <FastaUpload extractDataToUpload={extractDataToUpload} cleanFile={cleanFile} setCleanFile={setCleanFile} />
         {/* <FastaUpload extractDataToUpload={extractDataToUpload}  effectON={effectON} effectOFF={effectOFF}/> */}
 
       </ExpansionPanel>
 
-      <ExpansionPanel TransitionProps={{ unmountOnExit: true }} disabled={!newick_tree} >
+      {/* <ExpansionPanel TransitionProps={{ unmountOnExit: true }} disabled={!newick_tree} > */}
+      <ExpansionPanel TransitionProps={{ unmountOnExit: true }} disabled={!newick_tree} onChange={handleClickTree} name="arbol" expanded={expand_tree} >
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
-          <Typography className={classes.heading}>Árbol filogenético</Typography>
+          <Typography className={ !newick_tree ? classes.heading2 : classes.heading }>Árbol Filogenético</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Typography>
@@ -163,13 +199,17 @@ export default function SimpleExpansionPanel() {
       </ExpansionPanel>
 
 
-      <ExpansionPanel TransitionProps={{ unmountOnExit: true }} disabled={!sequences || sequences.length === 0} >
+      {/* <ExpansionPanel TransitionProps={{ unmountOnExit: true }} disabled={!sequences || sequences.length === 0}  expanded={expand_map} id="map2" > */}
+      <ExpansionPanel TransitionProps={{ unmountOnExit: true }} disabled={!sequences || sequences.length === 0} name="map2" expanded={expand_map} onChange={handleClickMap} >
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel3a-content"
           id="panel3a-header"
+          //onClick={handleClickMap}
+          //onChange={handleClickMap}
+          //id="map"
         >
-          <Typography className={classes.heading}>Mapa</Typography>
+          <Typography className={ (!sequences || sequences.length === 0) ? classes.heading2 : classes.heading } >Mapa</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Typography>
@@ -186,8 +226,10 @@ export default function SimpleExpansionPanel() {
       {/* <BackLock extractLoading={extractLoading} /> */}
 
     <br/>
-    <br/>
 
+    <CleanButton  cleanData={cleanData} disabled={!newick_tree}/>
+
+    <br/>
 
     </div>
     
