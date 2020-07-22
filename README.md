@@ -1,6 +1,6 @@
 
 # bioinformatica-backend
-*Grupo 5: Cuoco,Carlos - Markon,Mariano - Verdacanna Mariano* 
+*Grupo 3: Cuoco,Carlos - Markon,Mariano - Verdacanna Mariano* 
 
 
 Este aplicacion fue hecha para funcionar con el proyecto desarrollado en python en el repositorio alojado
