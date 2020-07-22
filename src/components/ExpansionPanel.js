@@ -36,8 +36,8 @@ export default function SimpleExpansionPanel() {
   const classes = useStyles();
 
 
-  var msj_fasta = " Se solicita ingresar un archivo con formato fasta y extensión “xxxx.fasta”.  Por ahora solo se aceptan cadenas de nucleotidos.  " + "\n" +
-                    " Formato de header esperado:   ' >nombreSecuencias | Latitud | Longitud | id  '   " + "\n" + "            ." + "\n" +
+  var msj_fasta = " Se solicita ingresar un archivo con formato fasta (puede estar alineado o no) y extensión “xxxx.fasta”.  Por ahora solo se aceptan cadenas de nucleotidos.  " + "\n" +
+                    " Formato de header esperado:   ' >Id de la secuiencia | Latitud | Longitud | nombre de la secuencia  '   " + "\n" + "            ." + "\n" +
                     " Latitud:  número comprendido entre -90 y 90.  "  + "\n" +
                     " Longitud:  número comprendido entre -180 y 180";
 
